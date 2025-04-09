@@ -8,14 +8,9 @@ class AppSettings(BaseSettings):
 	app_api_key: str
 	app_database_db: str
 	app_database_url: str
-	app_semaphore_url: str
-	app_semaphore_key: str
-	app_semaphore_sender_name: str
-	app_mail_host: str
-	app_mail_port: int
-	app_mail_username: str
-	app_mail_password: str
-	app_mail_from: str
+
+	app_xendit_secret_key: str
+	app_xendit_public_key: str
 
 	class Config:
 		env_file = '.env'
