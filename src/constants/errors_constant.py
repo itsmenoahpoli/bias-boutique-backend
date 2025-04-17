@@ -1,6 +1,4 @@
-from enum import Enum
-
-class ErrorTypes(Enum):
+class ErrorTypes:
     ALREADY_EXISTS = "ALREADY_EXISTS"
     VALIDATION_ERROR = "VALIDATION_ERROR"
     UNAUTHORIZED_ERROR = "UNAUTHORIZED_ERROR"

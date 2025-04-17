@@ -16,7 +16,7 @@ def signin_handler(payload: SigninDTO):
 	if result is False:
 		return HTTPResponse(
 		status_code=status.HTTP_401_UNAUTHORIZED,
-		detail=str(ErrorTypes.UNAUTHORIZED_ERROR)
+		detail=ErrorTypes.UNAUTHORIZED_ERROR
 	)
 
 	return HTTPResponse(
@@ -31,7 +31,7 @@ def signup_handler(payload: SignupDTO):
 	if result is False:
 		return HTTPResponse(
 		status_code=status.HTTP_400_BAD_REQUEST,
-		detail=str(ErrorTypes.ALREADY_EXISTS)
+		detail=ErrorTypes.ALREADY_EXISTS
 	)
 
 	return HTTPResponse(
