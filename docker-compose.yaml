@@ -11,7 +11,5 @@ services:
             - APP_DATABASE_DB=${APP_DATABASE_DB}
             - APP_DATABASE_URL=${APP_DATABASE_URL}
             - APP_SEMAPHORE_URL=${APP_SEMAPHORE_URL}
-            - APP_SEMAPHORE_KEY=${APP_SEMAPHORE_KEY}
-            - APP_SEMAPHORE_SENDER_NAME=${APP_SEMAPHORE_SENDER_NAME}
         volumes:
             - .:/app
