@@ -3,6 +3,7 @@ from pydantic import BaseModel, Field
 class ProductDTO(BaseModel):
 	sku: str = Field(min_length=8, max_length=8)
 	name: str = Field(min_length=1, max_length=100)
+	category: str
 	description: str
 	price: float
 	discounted_price: float

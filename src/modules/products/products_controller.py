@@ -1,7 +1,8 @@
-from fastapi import APIRouter, status
+from fastapi import APIRouter, status, File, UploadFile, Depends
 from .products_service import products_service
 from .products_dto import ProductDTO
 from src.utils.http_utils import HTTPResponse
+from src.utils.file_utils import save_upload_file
 from src.constants.errors_constant import ErrorTypes
 
 products_router = APIRouter(
@@ -37,8 +38,25 @@ async def delete_one_handler(id: str):
 	)
 
 @products_router.post('/')
-async def create_list_handler(payload: ProductDTO):
-	result = products_service.create_data(payload.model_dump(), 'name')
+async def create_handler(
+	payload: ProductDTO = Depends(),
+	image: UploadFile = File(..., description="Product image file")
+):
+	if not image.content_type.startswith('image/'):
+		return HTTPResponse(
+			detail="File must be an image",
+			status_code=status.HTTP_400_BAD_REQUEST
+		)
+	
+	# Save image to public assets folder
+	UPLOAD_DIR = "public/assets/products"
+	saved_filename = save_upload_file(image, UPLOAD_DIR)
+	
+	# Add image path to payload
+	product_data = payload.model_dump()
+	product_data['image'] = f"/assets/products/{saved_filename}"
+	
+	result = products_service.create_data(product_data, 'name')
 
 	if result == ErrorTypes.ALREADY_EXISTS:
 		return HTTPResponse(

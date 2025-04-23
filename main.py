@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from src.routers.router import initialize_api_routes
 
@@ -7,6 +8,8 @@ app = FastAPI(
 	description="Main core data server",
 	redoc_url=None
 )
+
+app.mount("/assets", StaticFiles(directory="public/assets"), name="assets")
 
 app.add_middleware(
   CORSMiddleware,
