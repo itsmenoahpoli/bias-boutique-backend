@@ -19,8 +19,8 @@ class PaymentsService:
                     amount=amount,
                     description=description,
                     currency="PHP",
-                    success_redirect_url="http://localhost:8000?payment_status=success",
-                    failure_redirect_url="http://localhost:8000?payment_status=failed",
+                    success_redirect_url="http://localhost:8000/payment-status/success.html",
+                    failure_redirect_url="http://localhost:8000/payment-status/failed.html",
                 )
             )
 

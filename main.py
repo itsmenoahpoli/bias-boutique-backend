@@ -10,6 +10,7 @@ app = FastAPI(
 )
 
 app.mount("/assets", StaticFiles(directory="public/assets"), name="assets")
+app.mount("/payment-status", StaticFiles(directory="public/payment-status"), name="payment-status")
 
 app.add_middleware(
   CORSMiddleware,
