@@ -9,7 +9,7 @@ client = xendit.ApiClient()
 
 class PaymentsService:
     @classmethod
-    def create_payment_link(self, amount: float, description: str):
+    def create_payment_link(self, amount: float, description: str, order_id: str):
         try:
             amount = float(amount)
             
@@ -19,8 +19,8 @@ class PaymentsService:
                     amount=amount,
                     description=description,
                     currency="PHP",
-                    success_redirect_url="http://localhost:8000/payment-status/success.html",
-                    failure_redirect_url="http://localhost:8000/payment-status/failed.html",
+                    success_redirect_url="http://localhost:8000/payment-status/success.html?order_id=" + order_id,
+                    failure_redirect_url="http://localhost:8000/payment-status/failed.html?order_id=" + order_id,
                 )
             )
 

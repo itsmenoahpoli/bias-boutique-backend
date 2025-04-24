@@ -1,9 +1,10 @@
-from fastapi import APIRouter, status, File, UploadFile, Depends, Form
+from fastapi import APIRouter, status, File, UploadFile, Depends, Form, Query
 from .products_service import products_service
 from .products_dto import ProductDTO
 from src.utils.http_utils import HTTPResponse
 from src.utils.file_utils import save_upload_file
 from src.constants.errors_constant import ErrorTypes
+from typing import Optional
 import json
 
 products_router = APIRouter(
@@ -12,8 +13,8 @@ products_router = APIRouter(
 )
 
 @products_router.get('/')
-async def get_list_handler():
-	result = products_service.get_list_data()
+async def get_list_handler(category: Optional[str] = Query(None, description="Filter products by category")):
+	result = products_service.get_filtered_products(category)
 	
 	return HTTPResponse(
 		detail=result,

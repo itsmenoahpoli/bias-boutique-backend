@@ -48,7 +48,7 @@ async def delete_one_handler(id: str):
 
 @orders_router.post('/')
 async def create_handler(payload: OrderDTO):
-	result = orders_service.create_data(payload.model_dump(), 'name')
+	result = orders_service.create_data(payload.model_dump())
 
 	if result == ErrorTypes.ALREADY_EXISTS:
 		return HTTPResponse(
