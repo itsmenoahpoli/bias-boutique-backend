@@ -12,20 +12,25 @@ class AuthService:
 	def __check_user_credentials(self, credentials):
 		user = users_service.find_by_email(credentials['email'])
 
-		if user is None or user['is_enabled'] is False or not verify_password(credentials['password'], user['password']):
+		print(verify_password(credentials['password'], user['password']))
+
+		if user is None or user['is_enabled'] is False or verify_password(credentials['password'], user['password']) is False:
 			return False
 		
 		return user
 
 	def authenticate_credentials(self, credentials):
-		check_user = self.__check_user_credentials(credentials)
+		user = self.__check_user_credentials(credentials)
 
-		if check_user is False:
+		if user is False:
 			return False
 
 		auth_encode = {
 			"user": {
-				"name": check_user['name']
+				"id": user['id'],
+				"name": user['name'],
+				"email": user['email'],
+				"account_type": user['account_type']
 			},
 			"expires": TOKEN_EXPIRATION_TIME
 		}
@@ -42,7 +47,9 @@ class AuthService:
 		if check_user:
 			return False
 
-		users_service.find_by_email(account_data['email'])
+		account_data['password'] = account_data['password']
+		users_service.create_user_account(account_data)
+
 
 		return "ACCOUNT_CREATED"
 

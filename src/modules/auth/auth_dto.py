@@ -11,3 +11,4 @@ class SignupDTO(BaseModel):
 	contact_no: str
 	email: EmailStr
 	password: str = Field(min_length=8, max_length=32)
+	account_type: str

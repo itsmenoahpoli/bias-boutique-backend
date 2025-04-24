@@ -48,11 +48,9 @@ async def create_handler(
 			status_code=status.HTTP_400_BAD_REQUEST
 		)
 	
-	# Save image to public assets folder
 	UPLOAD_DIR = "public/assets/products"
 	saved_filename = save_upload_file(image, UPLOAD_DIR)
 	
-	# Add image path to payload
 	product_data = payload.model_dump()
 	product_data['image'] = f"/assets/products/{saved_filename}"
 	
