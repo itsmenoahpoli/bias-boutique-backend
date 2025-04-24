@@ -1,4 +1,5 @@
 from fastapi import APIRouter, status
+from src.modules.payments import payments_service
 from .orders_service import orders_service
 from .orders_dto import OrderDTO
 from src.utils.http_utils import HTTPResponse
@@ -8,6 +9,15 @@ orders_router = APIRouter(
 	prefix="/orders",
 	tags=["Orders"]
 )
+
+@orders_router.post('/payments/create-invoice')
+async def create_invoice_handler():
+	result = payments_service.create_payment_link(500, '[BIAS BOUTIQUE] Test payment')
+	
+	return HTTPResponse(
+		detail=result,
+		status_code=status.HTTP_201_CREATED
+	)
 
 @orders_router.get('/')
 async def get_list_handler():

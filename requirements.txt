@@ -1,5 +1,6 @@
 annotated-types==0.7.0
 anyio==4.8.0
+bcrypt==4.0.1
 certifi==2025.1.31
 cffi==1.17.1
 charset-normalizer==3.4.1
@@ -20,7 +21,6 @@ markdown-it-py==3.0.0
 MarkupSafe==3.0.2
 mdurl==0.1.2
 passlib==1.7.4
-bcrypt==4.0.1
 pycparser==2.22
 pydantic==2.10.6
 pydantic-settings==2.7.1
@@ -41,5 +41,7 @@ typer==0.15.1
 typing_extensions==4.12.2
 urllib3==2.3.0
 uvicorn==0.34.0
+uvloop==0.21.0
 watchfiles==1.0.4
 websockets==14.2
+xendit-python==6.3.0
