@@ -12,7 +12,7 @@ orders_router = APIRouter(
 
 @orders_router.post('/payments/create-invoice')
 async def create_invoice_handler():
-	result = payments_service.create_payment_link(500, '[BIAS BOUTIQUE] Test payment')
+	result = payments_service.create_payment_link(500, '[BIAS BOUTIQUE] Test payment', "1")
 	
 	return HTTPResponse(
 		detail=result,

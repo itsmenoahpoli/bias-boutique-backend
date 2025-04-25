@@ -10,11 +10,6 @@ class CartItemDTO(BaseModel):
 
 class OrderDTO(BaseModel):
     customer_email: str
-    payment_link: str
     cart_items: List[CartItemDTO]
     total_amount: float
     voucher: Optional[str]
-    is_paid: bool
-    date_checkout: str
-    payment_type: str
-    date_paid: Optional[str]
