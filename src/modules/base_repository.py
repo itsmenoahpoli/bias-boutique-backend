@@ -12,7 +12,10 @@ class BaseRepository:
 		return [self._single_serializer(item) for item in data]
 
 	def _single_serializer(self, data):
-		if data:
+		if not data:
+			return None
+			
+		if "_id" in data:
 			data["id"] = str(data["_id"])
 			del data["_id"]
 	
@@ -26,16 +29,16 @@ class BaseRepository:
 
 	def get_list_data(self):
 		result = self._entity.find()
-
 		return self._list_serializer(result)
 
 	def get_single_data(self, id):
-		result = self._entity.find_one({ "_id": ObjectId(id) })
-
-		if result == None:
+		try:
+			result = self._entity.find_one({ "_id": ObjectId(id) })
+			if result is None:
+				return ErrorTypes.NOT_FOUND_ERROR
+			return self._single_serializer(result)
+		except:
 			return ErrorTypes.NOT_FOUND_ERROR
-		
-		return self._single_serializer(result)
 
 	def create_data(self, data, flag_unique_by = None):
 		if flag_unique_by and self.__check_if_exists(data, flag_unique_by):
@@ -50,15 +53,27 @@ class BaseRepository:
 		return data
 
 	def update_data(self, id, data):
-		result = self._entity.update_one({ "_id": ObjectId(id) }, { "$set": data })
+		try:
+			# First check if document exists
+			existing = self._entity.find_one({ "_id": ObjectId(id) })
+			if not existing:
+				return None
 
-		if result.modified_count == 0:
+			# Update the document
+			data["updatedAt"] = datetime.datetime.now(datetime.timezone.utc)
+			result = self._entity.update_one(
+				{ "_id": ObjectId(id) }, 
+				{ "$set": data }
+			)
+
+			if result.modified_count == 0:
+				return None
+			
+			# Get and return updated document
+			updated_data = self._entity.find_one({ "_id": ObjectId(id) })
+			return self._single_serializer(updated_data)
+		except:
 			return None
-		
-		updated_data = self.get_single_data(id)
-
-		return self._single_serializer(updated_data)
-		
 
 
 	def delete_data(self, id, is_soft_delete = False):
@@ -71,7 +86,6 @@ class BaseRepository:
 			})
 		
 		result = self._entity.delete_one({ "_id": ObjectId(id) })
-
 		return result
 
 		

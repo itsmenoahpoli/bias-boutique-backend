@@ -18,7 +18,7 @@ async def get_list_handler():
 		status_code=status.HTTP_200_OK
 	)
 
-@user_roles_router.get('{id}')
+@user_roles_router.get('/{id}')
 async def get_single_handler(id: str):
 	result = user_roles_service.get_single_data(id)
 	
@@ -27,7 +27,7 @@ async def get_single_handler(id: str):
 		status_code=status.HTTP_200_OK
 	)
 
-@user_roles_router.delete('{id}')
+@user_roles_router.delete('/{id}')
 async def delete_one_handler(id: str):
 	result = user_roles_service.delete_data(id)
 	

@@ -16,7 +16,7 @@ async def get_list_handler():
 		status_code=status.HTTP_200_OK
 	)
 
-@users_router.get('{id}')
+@users_router.get('/{id}')
 async def get_single_handler(id: str):
 	result = users_service.get_single_data(id)
 	

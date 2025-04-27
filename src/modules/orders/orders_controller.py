@@ -28,7 +28,7 @@ async def get_list_handler():
 		status_code=status.HTTP_200_OK
 	)
 
-@orders_router.get('{id}')
+@orders_router.get('/{id}')
 async def get_single_handler(id: str):
 	result = orders_service.get_single_data(id)
 	
@@ -37,7 +37,7 @@ async def get_single_handler(id: str):
 		status_code=status.HTTP_200_OK
 	)
 
-@orders_router.delete('{id}')
+@orders_router.delete('/{id}')
 async def delete_one_handler(id: str):
 	result = orders_service.delete_data(id)
 	
