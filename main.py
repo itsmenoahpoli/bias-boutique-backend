@@ -13,10 +13,12 @@ app.mount("/assets", StaticFiles(directory="public/assets"), name="assets")
 app.mount("/payment-status", StaticFiles(directory="public/payment-status"), name="payment-status")
 
 app.add_middleware(
-  CORSMiddleware,
-	allow_origins=['*'],
+	CORSMiddleware,
+	allow_origins=["*"],
+	allow_credentials=True,
 	allow_methods=["*"],
 	allow_headers=["*"],
+	expose_headers=["*"]
 )
 
 initialize_api_routes(app)
