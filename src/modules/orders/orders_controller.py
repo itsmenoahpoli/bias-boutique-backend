@@ -37,7 +37,7 @@ async def get_single_handler(id: str):
 		status_code=status.HTTP_200_OK
 	)
 
-@orders_router.delete('/{id}')
+@orders_router.delete('{id}')
 async def delete_one_handler(id: str):
 	result = orders_service.delete_data(id)
 	
@@ -46,7 +46,7 @@ async def delete_one_handler(id: str):
 		status_code=status.HTTP_200_OK
 	)
 
-@orders_router.post('/')
+@orders_router.post('')
 async def create_handler(payload: OrderDTO):
 	result = orders_service.create_data(payload.model_dump())
 

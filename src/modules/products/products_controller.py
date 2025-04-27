@@ -30,7 +30,7 @@ async def get_single_handler(id: str):
 		status_code=status.HTTP_200_OK
 	)
 
-@products_router.delete('/{id}')
+@products_router.delete('{id}')
 async def delete_one_handler(id: str):
 	result = products_service.delete_data(id)
 	
@@ -39,7 +39,7 @@ async def delete_one_handler(id: str):
 		status_code=status.HTTP_200_OK
 	)
 
-@products_router.post('/')
+@products_router.post('')
 async def create_handler(
 	payload: str = Form(...),
 	image: UploadFile = File(..., description="Product image file")

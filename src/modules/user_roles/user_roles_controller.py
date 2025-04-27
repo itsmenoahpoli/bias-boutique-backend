@@ -27,7 +27,7 @@ async def get_single_handler(id: str):
 		status_code=status.HTTP_200_OK
 	)
 
-@user_roles_router.delete('/{id}')
+@user_roles_router.delete('{id}')
 async def delete_one_handler(id: str):
 	result = user_roles_service.delete_data(id)
 	
@@ -36,7 +36,7 @@ async def delete_one_handler(id: str):
 		status_code=status.HTTP_200_OK
 	)
 
-@user_roles_router.post('/')
+@user_roles_router.post('')
 async def create_handler(payload: UserRoleDTO):
 	result = user_roles_service.create_data(payload.model_dump(), 'name')
 
