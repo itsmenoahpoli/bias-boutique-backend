@@ -12,7 +12,8 @@ logger = logging.getLogger(__name__)
 app = FastAPI(
 	title="Bias Boutique API Server & Database",
 	description="Main core data server",
-	redoc_url=None
+	redoc_url=None,
+	redirect_slashes=False
 )
 
 
