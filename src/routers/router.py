@@ -4,9 +4,17 @@ from src.modules.user_roles.user_roles_controller import user_roles_router
 from src.modules.users.users_controller import users_router
 from src.modules.products.products_controller import products_router
 from src.modules.orders.orders_controller import orders_router
+from src.modules.dashboard.dashboard_controller import dashboard_router
 
 API_PREFIX_V1 = "/api/v1"
-app_routers = [auth_router, user_roles_router, users_router, products_router, orders_router]
+app_routers = [
+    auth_router, 
+    user_roles_router, 
+    users_router, 
+    products_router, 
+    orders_router,
+    dashboard_router
+]
 
 def initialize_api_routes(app: FastAPI):
     for router in app_routers:
