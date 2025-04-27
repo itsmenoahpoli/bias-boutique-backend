@@ -15,31 +15,22 @@ app = FastAPI(
 	redoc_url=None
 )
 
-# Explicit OPTIONS handler for all routes
-@app.options("/{full_path:path}")
-async def options_handler(request: Request):
-	return JSONResponse(
-		status_code=200,
-		content={"message": "OK"},
-	)
-
 # CORS middleware configuration
 app.add_middleware(
 	CORSMiddleware,
 	allow_origins=["*"],
-	allow_credentials=False,  # Must be False when using allow_origins=["*"]
-	allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
+	allow_credentials=False,
+	allow_methods=["*"],  # Allow all methods
 	allow_headers=["*"],
 	expose_headers=["*"],
-	max_age=3600,
 )
 
 @app.middleware("http")
-async def add_cors_headers(request: Request, call_next):
+async def logging_middleware(request: Request, call_next):
+	logger.info(f"Request: {request.method} {request.url}")
+	logger.info(f"Headers: {request.headers}")
 	response = await call_next(request)
-	response.headers["Access-Control-Allow-Origin"] = "*"
-	response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS, PATCH"
-	response.headers["Access-Control-Allow-Headers"] = "*"
+	logger.info(f"Response status: {response.status_code}")
 	return response
 
 # Mount static files after middleware
