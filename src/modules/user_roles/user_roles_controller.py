@@ -9,7 +9,7 @@ user_roles_router = APIRouter(
 	tags=["User Roles"]
 )
 
-@user_roles_router.get('/')
+@user_roles_router.get('')
 async def get_list_handler():
 	result = user_roles_service.get_list_data()
 	
@@ -18,7 +18,7 @@ async def get_list_handler():
 		status_code=status.HTTP_200_OK
 	)
 
-@user_roles_router.get('/{id}')
+@user_roles_router.get('{id}')
 async def get_single_handler(id: str):
 	result = user_roles_service.get_single_data(id)
 	

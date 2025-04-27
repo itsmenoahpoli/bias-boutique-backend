@@ -12,7 +12,7 @@ products_router = APIRouter(
 	tags=["Products"]
 )
 
-@products_router.get('/')
+@products_router.get('')
 async def get_list_handler(category: Optional[str] = Query(None, description="Filter products by category")):
 	result = products_service.get_filtered_products(category)
 	
@@ -21,7 +21,7 @@ async def get_list_handler(category: Optional[str] = Query(None, description="Fi
 		status_code=status.HTTP_200_OK
 	)
 
-@products_router.get('/{id}')
+@products_router.get('{id}')
 async def get_single_handler(id: str):
 	result = products_service.get_single_data(id)
 	

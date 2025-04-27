@@ -19,7 +19,7 @@ async def create_invoice_handler():
 		status_code=status.HTTP_201_CREATED
 	)
 
-@orders_router.get('/')
+@orders_router.get('')
 async def get_list_handler():
 	result = orders_service.get_list_data()
 	
@@ -28,7 +28,7 @@ async def get_list_handler():
 		status_code=status.HTTP_200_OK
 	)
 
-@orders_router.get('/{id}')
+@orders_router.get('{id}')
 async def get_single_handler(id: str):
 	result = orders_service.get_single_data(id)
 	
