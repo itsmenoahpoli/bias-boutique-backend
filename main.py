@@ -1,8 +1,6 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
-from fastapi.middleware.httpsredirect import HTTPSRedirectMiddleware
 from src.routers.router import initialize_api_routes
 import logging
 
@@ -16,43 +14,18 @@ app = FastAPI(
 	redoc_url=None
 )
 
-# HTTPS redirect middleware
-app.add_middleware(HTTPSRedirectMiddleware)
 
 # CORS middleware configuration
 app.add_middleware(
 	CORSMiddleware,
 	allow_origins=["*"],
 	allow_credentials=False,
-	allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH", "HEAD"],
+	allow_methods=["*"],
 	allow_headers=["*"],
 	expose_headers=["*"],
 	max_age=600,  # Cache preflight requests for 10 minutes
 )
 
-@app.middleware("http")
-async def cors_middleware(request: Request, call_next):
-	# Handle preflight requests
-	if request.method == "OPTIONS":
-		headers = {
-			"Access-Control-Allow-Origin": "*",
-			"Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS, PATCH, HEAD",
-			"Access-Control-Allow-Headers": "*",
-			"Access-Control-Max-Age": "600",
-		}
-		return JSONResponse(content={}, status_code=200, headers=headers)
-	
-	response = await call_next(request)
-	response.headers["Access-Control-Allow-Origin"] = "*"
-	return response
-
-@app.middleware("http")
-async def logging_middleware(request: Request, call_next):
-	logger.info(f"Request: {request.method} {request.url}")
-	logger.info(f"Headers: {request.headers}")
-	response = await call_next(request)
-	logger.info(f"Response status: {response.status_code}")
-	return response
 
 # Mount static files after middleware
 app.mount("/assets", StaticFiles(directory="public/assets"), name="assets")
