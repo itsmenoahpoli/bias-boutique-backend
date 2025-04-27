@@ -1,7 +1,13 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from src.routers.router import initialize_api_routes
+import logging
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 app = FastAPI(
 	title="Bias Boutique API Server & Database",
@@ -9,26 +15,39 @@ app = FastAPI(
 	redoc_url=None
 )
 
-# Define allowed origins - add your frontend URLs here
-origins = [
-	"http://localhost:5173",  # Vite default
-	"http://localhost:3000",
-	"https://bias-boutique-backend-production.up.railway.app",
-	"*"  # Allow all origins
-]
+# Explicit OPTIONS handler for all routes
+@app.options("/{full_path:path}")
+async def options_handler(request: Request):
+	return JSONResponse(
+		status_code=200,
+		content={"message": "OK"},
+	)
 
-# Add CORS middleware before mounting static files
+# CORS middleware configuration
 app.add_middleware(
 	CORSMiddleware,
-	allow_origins=origins,
-	allow_credentials=True,
-	allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],  # Explicit methods
-	allow_headers=["Content-Type", "Authorization", "Accept", "Origin", "X-Requested-With"],
+	allow_origins=["*"],
+	allow_credentials=False,  # Must be False when using allow_origins=["*"]
+	allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
+	allow_headers=["*"],
 	expose_headers=["*"],
-	max_age=3600,  # Cache preflight requests for 1 hour
+	max_age=3600,
 )
 
+@app.middleware("http")
+async def add_cors_headers(request: Request, call_next):
+	response = await call_next(request)
+	response.headers["Access-Control-Allow-Origin"] = "*"
+	response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS, PATCH"
+	response.headers["Access-Control-Allow-Headers"] = "*"
+	return response
+
+# Mount static files after middleware
 app.mount("/assets", StaticFiles(directory="public/assets"), name="assets")
 app.mount("/payment-status", StaticFiles(directory="public/payment-status"), name="payment-status")
 
 initialize_api_routes(app)
+
+if __name__ == "__main__":
+	import uvicorn
+	uvicorn.run(app, host="0.0.0.0", port=8000)
