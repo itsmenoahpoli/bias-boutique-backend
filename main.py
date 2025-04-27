@@ -20,10 +20,25 @@ app.add_middleware(
 	CORSMiddleware,
 	allow_origins=["*"],
 	allow_credentials=False,
-	allow_methods=["*"],  # Allow all methods
+	allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH", "HEAD"],
 	allow_headers=["*"],
 	expose_headers=["*"],
+	max_age=600,  # Cache preflight requests for 10 minutes
 )
+
+@app.middleware("http")
+async def cors_middleware(request: Request, call_next):
+	if request.method == "OPTIONS":
+		response = JSONResponse(content={}, status_code=200)
+		response.headers["Access-Control-Allow-Origin"] = "*"
+		response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS, PATCH, HEAD"
+		response.headers["Access-Control-Allow-Headers"] = "*"
+		response.headers["Access-Control-Max-Age"] = "600"
+		return response
+		
+	response = await call_next(request)
+	response.headers["Access-Control-Allow-Origin"] = "*"
+	return response
 
 @app.middleware("http")
 async def logging_middleware(request: Request, call_next):
