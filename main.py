@@ -1,7 +1,6 @@
 from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
 from src.routers.router import initialize_api_routes
 import logging
 
@@ -21,27 +20,12 @@ app = FastAPI(
 app.add_middleware(
 	CORSMiddleware,
 	allow_origins=["*"],
-	allow_credentials=False,
-	allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH", "HEAD"],
+	allow_credentials=True,
+	allow_methods=["*"],
 	allow_headers=["*"],
 	expose_headers=["*"],
 	max_age=600,
 )
-
-@app.middleware("http")
-async def cors_middleware(request: Request, call_next):
-	if request.method == "OPTIONS":
-		headers = {
-			"Access-Control-Allow-Origin": "*",
-			"Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS, PATCH, HEAD",
-			"Access-Control-Allow-Headers": "*",
-			"Access-Control-Max-Age": "600",
-		}
-		return JSONResponse(content={}, status_code=200, headers=headers)
-	
-	response = await call_next(request)
-	response.headers["Access-Control-Allow-Origin"] = "*"
-	return response
 
 # Mount static files after middleware
 app.mount("/assets", StaticFiles(directory="public/assets"), name="assets")
