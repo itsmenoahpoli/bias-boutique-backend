@@ -49,8 +49,9 @@ async def delete_one_handler(id: str):
                 status_code=status.HTTP_404_NOT_FOUND
             )
         
+        # Return a success message instead of the DeleteResult object
         return HTTPResponse(
-            detail=result,
+            detail={"message": "Product deleted successfully"},
             status_code=status.HTTP_200_OK
         )
     except Exception as e:
