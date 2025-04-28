@@ -1,4 +1,4 @@
-from fastapi import APIRouter, status, HTTPException
+from fastapi import APIRouter, status, HTTPException, Query, UploadFile, File, Form
 from .products_service import products_service
 from .products_dto import ProductCreateDTO
 from src.utils.http_utils import HTTPResponse
