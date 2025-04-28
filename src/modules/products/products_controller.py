@@ -1,4 +1,4 @@
-from fastapi import APIRouter, status, File, UploadFile, Depends, Form, Query, Body
+from fastapi import APIRouter, status, HTTPException
 from .products_service import products_service
 from .products_dto import ProductCreateDTO
 from src.utils.http_utils import HTTPResponse
@@ -40,12 +40,24 @@ async def get_single_handler(id: str):
 
 @products_router.delete('/{id}')
 async def delete_one_handler(id: str):
-	result = products_service.delete_data(id)
-	
-	return HTTPResponse(
-		detail=result,
-		status_code=status.HTTP_200_OK
-	)
+    try:
+        result = products_service.delete_data(id)
+        
+        if result == ErrorTypes.NOT_FOUND_ERROR:
+            return HTTPResponse(
+                detail="Product not found",
+                status_code=status.HTTP_404_NOT_FOUND
+            )
+        
+        return HTTPResponse(
+            detail=result,
+            status_code=status.HTTP_200_OK
+        )
+    except Exception as e:
+        return HTTPResponse(
+            detail=str(e),
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
 
 @products_router.post('')
 async def create_handler(
