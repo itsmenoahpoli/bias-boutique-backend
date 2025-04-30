@@ -1,9 +1,12 @@
-from fastapi import APIRouter, status
+import logging
+from fastapi import APIRouter, Request, status
 from src.modules.payments import payments_service
 from .orders_service import orders_service
 from .orders_dto import OrderDTO
 from src.utils.http_utils import HTTPResponse
 from src.constants.errors_constant import ErrorTypes
+
+logging.basicConfig(level=logging.INFO)
 
 orders_router = APIRouter(
 	prefix="/orders",
@@ -47,7 +50,9 @@ async def delete_one_handler(id: str):
 	)
 
 @orders_router.post('')
-async def create_handler(payload: OrderDTO):
+async def create_handler(payload: OrderDTO,  request: Request):
+	client_ip = request.client.host
+	logging.info(f"ORDER CHECKOUT Request received from IP: {client_ip}")
 	result = orders_service.create_data(payload.model_dump())
 
 	if result == ErrorTypes.ALREADY_EXISTS:

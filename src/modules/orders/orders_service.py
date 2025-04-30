@@ -35,6 +35,8 @@ class OrdersService(BaseRepository):
         data['date_checkout'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         data['payment_type'] = 'online'
         data['date_paid'] = None
+
+        print(data)
         
         return super().create_data(data, flag_unique_by)
 
