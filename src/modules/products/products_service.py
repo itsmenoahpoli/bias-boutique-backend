@@ -5,11 +5,16 @@ class ProductsService(BaseRepository):
     def __init__(self):
         super().__init__(entity=entities.ProductEntity)
     
-    def get_filtered_products(self, category: str = None):
+    def get_filtered_products(self, category: str = None, name_query: str = None):
+        query = {}
+        
         if category:
-            result = self._entity.find({"category": category})
-        else:
-            result = self._entity.find()
+            query["category"] = category
+        
+        if name_query:
+            query["name"] = {"$regex": name_query, "$options": "i"}
+        
+        result = self._entity.find(query)
         return self._list_serializer(result)
 
 products_service = ProductsService()

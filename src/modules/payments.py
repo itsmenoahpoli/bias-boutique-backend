@@ -8,7 +8,6 @@ xendit.set_api_key(app_settings.app_xendit_secret_key)
 client = xendit.ApiClient()
 
 class PaymentsService:
-    @classmethod
     def create_payment_link(self, amount: float, description: str, order_id: str):
         try:
             amount = float(amount)
