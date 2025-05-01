@@ -34,10 +34,15 @@ class OrdersService(BaseRepository):
         data['is_paid'] = False
         data['date_checkout'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         data['payment_type'] = 'online'
+        data['shipping_status'] = 'to-ship'
         data['date_paid'] = None
 
         print(data)
         
         return super().create_data(data, flag_unique_by)
+
+    def get_orders_by_email(self, email):
+        orders = self._entity.find({"customer_email": email})
+        return self._list_serializer(orders)
 
 orders_service = OrdersService()

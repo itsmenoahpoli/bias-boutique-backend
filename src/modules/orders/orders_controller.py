@@ -65,3 +65,12 @@ async def create_handler(payload: OrderDTO,  request: Request):
 		detail=result,
 		status_code=status.HTTP_201_CREATED
 	)
+
+@orders_router.get('/by-email/{email}')
+async def get_orders_by_email_handler(email: str):
+	result = orders_service.get_orders_by_email(email)
+	
+	return HTTPResponse(
+		detail=result,
+		status_code=status.HTTP_200_OK
+	)

@@ -19,6 +19,12 @@ class UsersService(BaseRepository):
             return None
         return self._single_serializer(user)
     
+    def find_by_id(self, id):
+        user = self._entity.find_one({"_id": id})
+        if user is None:
+            return None
+        return self._single_serializer(user)
+    
     def check_user_exists(self, email, username):
         return self.find_by_email(email) is not None or self.find_by_username(username) is not None
     
@@ -32,5 +38,14 @@ class UsersService(BaseRepository):
         account_data['updatedAt'] = time.time()
         
         return self.create_data(account_data)
+
+    def update_user_account(self, user_id, update_data):
+        # If new_password is in update_data, rename it to password
+        if "new_password" in update_data:
+            update_data["password"] = update_data.pop("new_password")
+        
+        update_data['updatedAt'] = time.time()
+        
+        return self.update_data(user_id, update_data)
 
 users_service = UsersService()
