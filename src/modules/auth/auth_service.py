@@ -13,8 +13,6 @@ class AuthService:
 	def __check_user_credentials(self, credentials):
 		user = users_service.find_by_email(credentials['email'])
 
-		print(verify_password(credentials['password'], user['password']))
-
 		if user is None or user['is_enabled'] is False or verify_password(credentials['password'], user['password']) is False:
 			return False
 		
