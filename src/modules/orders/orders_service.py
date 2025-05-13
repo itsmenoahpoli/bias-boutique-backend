@@ -16,21 +16,21 @@ class OrdersService(BaseRepository):
         order_number = self.generate_order_number()
         data['order_number'] = order_number
         
-        payment_result = payments_service.create_payment_link(
-            amount=data['total_amount'],
-            description=f"[BIAS BOUTIQUE] Order #{order_number} payment for {data['customer_email']}",
-            order_id=str(order_number)
-        )
+        # payment_result = payments_service.create_payment_link(
+        #     amount=data['total_amount'],
+        #     description=f"[BIAS BOUTIQUE] Order #{order_number} payment for {data['customer_email']}",
+        #     order_id=str(order_number)
+        # )
         
-        if payment_result.get('error'):
-            return {
-                'error': payment_result['error'],
-                'status': 'failed'
-            }
+        # if payment_result.get('error'):
+        #     return {
+        #         'error': payment_result['error'],
+        #         'status': 'failed'
+        #     }
         
         data['cart_items'] = json.dumps(data['cart_items'])
-        data['payment_link'] = payment_result['payment_url']
-        data['payment_status'] = payment_result['status']
+        data['payment_link'] = None
+        data['payment_status'] = "pending"
         data['is_paid'] = False
         data['date_checkout'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         data['payment_type'] = 'online'

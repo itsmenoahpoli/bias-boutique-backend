@@ -29,6 +29,7 @@ class AuthService:
 				"id": user['id'],
 				"name": user['name'],
 				"email": user['email'],
+				"contact_no": user['contact_no'],
 				"account_type": user['account_type']
 			},
 			"expires": TOKEN_EXPIRATION_TIME
